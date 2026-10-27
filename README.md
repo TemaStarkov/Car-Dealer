@@ -1,6 +1,41 @@
-# Car Dealer
+<div align="center">
 
-Backend автосалона на Java 21 и Spring Boot: каталог автомобилей, конструктор комплектации, оформление заказов, запись на тест-драйв и управление складом. Учебный pet-проект с двумя сервисами, синхронным обменом через gRPC и асинхронным согласованием заказов через Kafka. Веб-интерфейс в репозиторий не входит; взаимодействие — через REST API и Swagger UI.
+# 🚘 Car Dealer
+
+### Backend автосалона: от выбора комплектации до согласования заказа со складом
+
+![Java](https://img.shields.io/badge/Java-21-ED8B00?logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.2.3-6DB33F?logo=springboot&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white)
+![Kafka](https://img.shields.io/badge/Apache_Kafka-231F20?logo=apachekafka&logoColor=white)
+![gRPC](https://img.shields.io/badge/gRPC-00897B)
+![Docker](https://img.shields.io/badge/Docker_Compose-2496ED?logo=docker&logoColor=white)
+
+**2 сервиса · отдельные БД · REST + gRPC · Kafka + Outbox · JWT / Keycloak**
+
+[Возможности](#возможности) · [Технологии](#технологии) · [Архитектура](#архитектура) · [Локальный запуск](#запуск) · [Тесты](#сборка-и-тесты)
+
+</div>
+
+---
+
+## О проекте
+
+Учебный pet-проект на Java 21 и Spring Boot, моделирующий работу автосалона: клиент выбирает автомобиль или собирает комплектацию, оформляет заказ и записывается на тест-драйв; сотрудники управляют складом и согласуют заказы.
+
+Проект демонстрирует разработку REST API, разделение бизнес-логики и инфраструктуры, работу с реляционными данными, синхронные и событийные интеграции, ролевой доступ и проверку взаимодействия сервисов в контейнерах. Взаимодействие с приложением — через **REST API и Swagger UI**; веб-интерфейса пока нет.
+
+> **Другой проект в этом репозитории:** [FinanceTracker](https://github.com/TemaStarkov/FinanceTracker) — C# / ASP.NET Core API для операций со счетами, сессий и истории транзакций.
+
+## Что посмотреть в коде
+
+| Задача | Решение | Где смотреть |
+| --- | --- | --- |
+| Получать актуальные автомобили со склада | Синхронный gRPC-вызов с Protobuf-контрактом | [Клиент](order-service/src/main/java/org/example/integration/grpc/CarGrpcClient.java) · [Сервер](storage-service/src/main/java/org/example/integration/grpc/CarGrpcService.java) · [Контракт](common-proto/src/main/proto/) |
+| Согласовывать заказы между сервисами | Kafka, сохранение исходящих событий в outbox и учёт обработанных событий | [Publisher заказов](order-service/src/main/java/org/example/integration/kafka/publisher/OutboxPublisher.java) · [Интеграции склада](storage-service/src/main/java/org/example/integration/kafka/) |
+| Ограничивать доступ по ролям и владельцу | JWT от Keycloak, Spring Security и проверки прав на заказ | [SecurityConfig](order-service/src/main/java/org/example/infrastructure/config/SecurityConfig.java) · [OrderSecurity](order-service/src/main/java/org/example/infrastructure/security/OrderSecurity.java) |
+| Поддерживать воспроизводимую схему БД | Миграции Liquibase и начальные данные | [Миграции заказов](order-service/src/main/resources/db/) · [Миграции склада](storage-service/src/main/resources/db/) |
+| Проверять полный цикл согласования | Сквозной тест с Docker Compose и ожиданием асинхронного результата | [Kafka / outbox E2E](src/integrationTest/java/org/example/Lab4KafkaEndToEndIT.java) · [CI](.github/workflows/ci.yml) |
 
 ## Возможности
 
@@ -73,10 +108,12 @@ gRPC контракт предоставляет `ListAvailableCars` и `GetCarB
 
 ## Запуск
 
+### 1. Поднять локальный стенд
+
 Нужны JDK 21, Docker с Compose v2 и свободные порты из таблицы ниже. Первая сборка скачивает Gradle и зависимости.
 
 ```bash
-git clone git@github.com:TemaStarkov/Car-Dealer.git
+git clone https://github.com/TemaStarkov/Car-Dealer.git
 cd Car-Dealer
 chmod +x gradlew
 ./gradlew :order-service:bootJar :storage-service:bootJar
@@ -99,7 +136,7 @@ Dockerfile копирует готовые JAR: перед пересборко�
 
 В Docker сервисы используют Kafka `kafka:9092`; gRPC склада доступен внутри сети как `storage-service:9091`.
 
-### Настройка авторизации
+### 2. Настроить авторизацию в Keycloak
 
 Realm автоматически не импортируется. Для защищённых API его нужно создать вручную:
 
@@ -171,7 +208,7 @@ docker compose down
 | `/api/warehouse/cars`, `/api/warehouse/parts` | Управление складом |
 | `/api/storage/assembly-orders` на storage-service | Заявки на сборку |
 
-Пример запроса к каталогу:
+После настройки Keycloak получите токен и выполните первый запрос к каталогу:
 
 ```bash
 curl 'http://localhost:8080/api/catalog/cars' \
@@ -189,3 +226,17 @@ curl 'http://localhost:8080/api/catalog/cars' \
 Интеграционные тесты требуют работающий Docker и загружают контейнеры. В сервисах проверяются миграции и seed-данные, каталог, заказы и gRPC. Корневой `Lab4KafkaEndToEndIT` поднимает `docker-compose-test.yml` и проверяет прохождение согласования через Kafka и outbox. Задача `integrationTest` зависит от сборки JAR обоих сервисов. `check` также запускает интеграционные тесты.
 
 GitHub Actions выполняет сборку, unit- и интеграционные тесты. Наличие задачи `test` само по себе не означает наличие отдельных unit-тестов: текущие тестовые сценарии находятся в `src/integrationTest`.
+
+## Если запуск не удался
+
+| Симптом | Что проверить |
+| --- | --- |
+| Контейнер сервиса не собирается: JAR не найден | Сначала выполните `./gradlew :order-service:bootJar :storage-service:bootJar`, затем повторите `docker compose up -d --build` |
+| Порт уже занят | Освободите порт из таблицы адресов или согласованно измените Compose и настройки приложения |
+| API возвращает `401` | Realm создан, токен не истёк, issuer совпадает с `http://localhost:8081/realms/car-dealership` |
+| API возвращает `403` | Назначена роль нужного маршрута, она присутствует в `realm_access.roles`; для заказа также проверьте владельца |
+| gRPC недоступен при `bootRun` | Склад запущен, клиенту передан адрес `static://localhost:9091` |
+
+## Текущий статус
+
+Реализован backend учебного автосалона с интеграциями и контейнерным стендом. В сервисах частично дублируются предметные модели и REST-контроллеры; дальнейшее развитие — уточнение границ сервисов, автоматический импорт realm Keycloak и фиксация версии Kafka для воспроизводимого запуска.
