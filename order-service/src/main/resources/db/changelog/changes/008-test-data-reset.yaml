@@ -1,0 +1,421 @@
+databaseChangeLog:
+  - changeSet:
+      id: 008-reset-and-seed-test-data
+      author: artstar
+      runAlways: true
+      changes:
+
+
+        - delete:
+            tableName: test_drive_orders
+        - delete:
+            tableName: custom_orders
+        - delete:
+            tableName: in_stock_orders
+        - delete:
+            tableName: orders
+        - delete:
+            tableName: car_configuration_components
+        - delete:
+            tableName: car_configurations
+        - delete:
+            tableName: component_compatible_models
+        - delete:
+            tableName: components
+        - delete:
+            tableName: part_compatible_models
+        - delete:
+            tableName: parts
+        - delete:
+            tableName: car_model_drives
+        - delete:
+            tableName: car_model_transmissions
+        - delete:
+            tableName: car_model_engines
+        - delete:
+            tableName: car_model_years
+        - delete:
+            tableName: cars
+        - delete:
+            tableName: car_models
+        - delete:
+            tableName: users
+
+
+
+
+
+
+
+
+        - insert:
+            tableName: users
+            columns:
+              - column: { name: id, value: "10000000-0000-0000-0000-000000000001" }
+              - column: { name: keycloak_id, value: "3109fb7e-a431-4586-a2b4-6ef1164ad822" }
+              - column: { name: created_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: updated_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: removed, valueBoolean: false }
+              - column: { name: first_name, value: "Иван" }
+              - column: { name: last_name, value: "Петров" }
+              - column: { name: role, value: "USER" }
+              - column: { name: active, valueBoolean: true }
+
+        - insert:
+            tableName: users
+            columns:
+              - column: { name: id, value: "10000000-0000-0000-0000-000000000002" }
+              - column: { name: keycloak_id, value: "ad7c15b7-8f56-43f9-9201-4a3f5bfc9aa8" }
+              - column: { name: created_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: updated_at, valueDate: "CURRENT_TIMESTAMP"}
+              - column: { name: removed, valueBoolean: false }
+              - column: { name: first_name, value: "Мария" }
+              - column: { name: last_name, value: "Иванова" }
+              - column: { name: role, value: "USER" }
+              - column: { name: active, valueBoolean: true }
+
+        - insert:
+            tableName: users
+            columns:
+              - column: { name: id, value: "10000000-0000-0000-0000-000000000003" }
+              - column: { name: keycloak_id, value: "f8513b6c-3634-4b2b-bd21-5b2ee72f0f38" }
+              - column: { name: created_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: updated_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: removed, valueBoolean: false }
+              - column: { name: first_name, value: "Петр" }
+              - column: { name: last_name, value: "Сидоров" }
+              - column: { name: role, value: "MANAGER" }
+              - column: { name: active, valueBoolean: true }
+              - column: { name: employee_id, value: "MGR001" }
+
+        - insert:
+            tableName: users
+            columns:
+              - column: { name: id, value: "10000000-0000-0000-0000-000000000004" }
+              - column: { name: keycloak_id, value: "2e0bca37-98e0-4edc-9b1f-c91424015177" }
+              - column: { name: created_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: updated_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: removed, valueBoolean: false }
+              - column: { name: first_name, value: "Алексей" }
+              - column: { name: last_name, value: "Смирнов" }
+              - column: { name: role, value: "WAREHOUSE_ADMIN" }
+              - column: { name: active, valueBoolean: true }
+              - column: { name: warehouse_id, value: "WH001" }
+
+        - insert:
+            tableName: users
+            columns:
+              - column: { name: id, value: "10000000-0000-0000-0000-000000000005" }
+              - column: { name: keycloak_id, value: "0a1f3b1a-bf7e-4116-9876-62127ca7110c" }
+              - column: { name: created_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: updated_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: removed, valueBoolean: false }
+              - column: { name: first_name, value: "Admin" }
+              - column: { name: last_name, value: "System" }
+              - column: { name: role, value: "ADMIN" }
+              - column: { name: active, valueBoolean: true }
+
+
+
+
+        - insert:
+            tableName: car_models
+            columns:
+              - column: { name: id, value: "20000000-0000-0000-0000-000000000001" }
+              - column: { name: created_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: updated_at, valueDate: "CURRENT_TIMESTAMP"}
+              - column: { name: removed, valueBoolean: false }
+              - column: { name: brand, value: "BMW" }
+              - column: { name: model, value: "320i" }
+              - column: { name: body_type, value: "SEDAN" }
+              - column: { name: base_price, valueNumeric: 3000000.00 }
+
+        - insert:
+            tableName: car_models
+            columns:
+              - column: { name: id, value: "20000000-0000-0000-0000-000000000002" }
+              - column: { name: created_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: updated_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: removed, valueBoolean: false }
+              - column: { name: brand, value: "Toyota" }
+              - column: { name: model, value: "Camry" }
+              - column: { name: body_type, value: "SEDAN" }
+              - column: { name: base_price, valueNumeric: 2500000.00 }
+
+
+        - insert:
+            tableName: car_model_years
+            columns:
+              - column: { name: car_model_id, value: "20000000-0000-0000-0000-000000000001" }
+              - column: { name: year_value, valueNumeric: 2023 }
+        - insert:
+            tableName: car_model_years
+            columns:
+              - column: { name: car_model_id, value: "20000000-0000-0000-0000-000000000001" }
+              - column: { name: year_value, valueNumeric: 2024 }
+        - insert:
+            tableName: car_model_engines
+            columns:
+              - column: { name: car_model_id, value: "20000000-0000-0000-0000-000000000001" }
+              - column: { name: power, valueNumeric: 150 }
+              - column: { name: volume, valueNumeric: 2.0 }
+              - column: { name: fuel_type, value: "PETROL" }
+              - column: { name: cylinders, valueNumeric: 4 }
+              - column: { name: model, value: "2.0 MPI" }
+        - insert:
+            tableName: car_model_transmissions
+            columns:
+              - column: { name: car_model_id, value: "20000000-0000-0000-0000-000000000001" }
+              - column: { name: transmission_type, value: "AUTOMATIC" }
+        - insert:
+            tableName: car_model_drives
+            columns:
+              - column: { name: car_model_id, value: "20000000-0000-0000-0000-000000000001" }
+              - column: { name: drive_type, value: "REAR" }
+
+
+        - insert:
+            tableName: car_model_years
+            columns:
+              - column: { name: car_model_id, value: "20000000-0000-0000-0000-000000000002" }
+              - column: { name: year_value, valueNumeric: 2024 }
+        - insert:
+            tableName: car_model_engines
+            columns:
+              - column: { name: car_model_id, value: "20000000-0000-0000-0000-000000000002" }
+              - column: { name: power, valueNumeric: 180 }
+              - column: { name: volume, valueNumeric: 2.5 }
+              - column: { name: fuel_type, value: "PETROL" }
+              - column: { name: cylinders, valueNumeric: 4 }
+              - column: { name: model, value: "2.5 Dynamic Force" }
+        - insert:
+            tableName: car_model_transmissions
+            columns:
+              - column: { name: car_model_id, value: "20000000-0000-0000-0000-000000000002" }
+              - column: { name: transmission_type, value: "AUTOMATIC" }
+        - insert:
+            tableName: car_model_drives
+            columns:
+              - column: { name: car_model_id, value: "20000000-0000-0000-0000-000000000002" }
+              - column: { name: drive_type, value: "FRONT" }
+
+
+
+
+        - insert:
+            tableName: cars
+            columns:
+              - column: { name: id, value: "30000000-0000-0000-0000-000000000001" }
+              - column: { name: created_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: updated_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: removed, valueBoolean: false }
+              - column: { name: brand, value: "BMW" }
+              - column: { name: model, value: "320i" }
+              - column: { name: year, valueNumeric: 2023 }
+              - column: { name: body_type, value: "SEDAN" }
+              - column: { name: fuel_type, value: "PETROL" }
+              - column: { name: transmission_type, value: "AUTOMATIC" }
+              - column: { name: drive_type, value: "REAR" }
+              - column: { name: engine_power, valueNumeric: 150 }
+              - column: { name: engine_volume, valueNumeric: 2.0 }
+              - column: { name: engine_fuel_type, value: "PETROL" }
+              - column: { name: engine_cylinders, valueNumeric: 4 }
+              - column: { name: engine_model, value: "2.0 MPI" }
+              - column: { name: color, value: "Black" }
+              - column: { name: price, valueNumeric: 3500000.00 }
+              - column: { name: status, value: "AVAILABLE" }
+              - column: { name: vin, value: "WBA00000000000001" }
+
+        - insert:
+            tableName: cars
+            columns:
+              - column: { name: id, value: "30000000-0000-0000-0000-000000000002" }
+              - column: { name: created_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: updated_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: removed, valueBoolean: false }
+              - column: { name: brand, value: "Toyota" }
+              - column: { name: model, value: "Camry" }
+              - column: { name: year, valueNumeric: 2024 }
+              - column: { name: body_type, value: "SEDAN" }
+              - column: { name: fuel_type, value: "PETROL" }
+              - column: { name: transmission_type, value: "AUTOMATIC" }
+              - column: { name: drive_type, value: "FRONT" }
+              - column: { name: engine_power, valueNumeric: 180 }
+              - column: { name: engine_volume, valueNumeric: 2.5 }
+              - column: { name: engine_fuel_type, value: "PETROL" }
+              - column: { name: engine_cylinders, valueNumeric: 4 }
+              - column: { name: engine_model, value: "2.5 Dynamic Force" }
+              - column: { name: color, value: "White" }
+              - column: { name: price, valueNumeric: 2600000.00 }
+              - column: { name: status, value: "AVAILABLE" }
+              - column: { name: vin, value: "JT000000000000002" }
+
+
+
+
+        - insert:
+            tableName: components
+            columns:
+              - column: { name: id, value: "40000000-0000-0000-0000-000000000001" }
+              - column: { name: created_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: updated_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: removed, valueBoolean: false }
+              - column: { name: name, value: "17'' Standard" }
+              - column: { name: type, value: "WHEELS" }
+              - column: { name: description, value: "Базовые колёса" }
+              - column: { name: price, valueNumeric: 0.00 }
+              - column: { name: base, valueBoolean: true }
+
+        - insert:
+            tableName: components
+            columns:
+              - column: { name: id, value: "40000000-0000-0000-0000-000000000002" }
+              - column: { name: created_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: updated_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: removed, valueBoolean: false }
+              - column: { name: name, value: "Автоматическая 8AT" }
+              - column: { name: type, value: "TRANSMISSION" }
+              - column: { name: description, value: "Базовая трансмиссия" }
+              - column: { name: price, valueNumeric: 0.00 }
+              - column: { name: base, valueBoolean: true }
+
+        - insert:
+            tableName: components
+            columns:
+              - column: { name: id, value: "40000000-0000-0000-0000-000000000003" }
+              - column: { name: created_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: updated_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: removed, valueBoolean: false }
+              - column: { name: name, value: "Спортивный кожаный" }
+              - column: { name: type, value: "STEERING_WHEEL" }
+              - column: { name: description, value: "Базовый руль" }
+              - column: { name: price, valueNumeric: 0.00 }
+              - column: { name: base, valueBoolean: true }
+
+        - insert:
+            tableName: components
+            columns:
+              - column: { name: id, value: "40000000-0000-0000-0000-000000000004" }
+              - column: { name: created_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: updated_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: removed, valueBoolean: false }
+              - column: { name: name, value: "Тканевый Graphite" }
+              - column: { name: type, value: "INTERIOR" }
+              - column: { name: description, value: "Базовый интерьер" }
+              - column: { name: price, valueNumeric: 0.00 }
+              - column: { name: base, valueBoolean: true }
+
+        - insert:
+            tableName: components
+            columns:
+              - column: { name: id, value: "40000000-0000-0000-0000-000000000005" }
+              - column: { name: created_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: updated_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: removed, valueBoolean: false }
+              - column: { name: name, value: "19'' M-Sport" }
+              - column: { name: type, value: "WHEELS" }
+              - column: { name: description, value: "Опциональные спортивные колёса" }
+              - column: { name: price, valueNumeric: 95000.00 }
+              - column: { name: base, valueBoolean: false }
+
+        - insert:
+            tableName: components
+            columns:
+              - column: { name: id, value: "40000000-0000-0000-0000-000000000006" }
+              - column: { name: created_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: updated_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: removed, valueBoolean: false }
+              - column: { name: name, value: "Кожаный Dakota" }
+              - column: { name: type, value: "INTERIOR" }
+              - column: { name: description, value: "Кожаный интерьер" }
+              - column: { name: price, valueNumeric: 110000.00 }
+              - column: { name: base, valueBoolean: false }
+
+
+        - insert: { tableName: component_compatible_models, columns: [ { column: { name: component_id, value: "40000000-0000-0000-0000-000000000001" } }, { column: { name: car_model_id, value: "20000000-0000-0000-0000-000000000001" } } ] }
+        - insert: { tableName: component_compatible_models, columns: [ { column: { name: component_id, value: "40000000-0000-0000-0000-000000000002" } }, { column: { name: car_model_id, value: "20000000-0000-0000-0000-000000000001" } } ] }
+        - insert: { tableName: component_compatible_models, columns: [ { column: { name: component_id, value: "40000000-0000-0000-0000-000000000003" } }, { column: { name: car_model_id, value: "20000000-0000-0000-0000-000000000001" } } ] }
+        - insert: { tableName: component_compatible_models, columns: [ { column: { name: component_id, value: "40000000-0000-0000-0000-000000000004" } }, { column: { name: car_model_id, value: "20000000-0000-0000-0000-000000000001" } } ] }
+        - insert: { tableName: component_compatible_models, columns: [ { column: { name: component_id, value: "40000000-0000-0000-0000-000000000005" } }, { column: { name: car_model_id, value: "20000000-0000-0000-0000-000000000001" } } ] }
+        - insert: { tableName: component_compatible_models, columns: [ { column: { name: component_id, value: "40000000-0000-0000-0000-000000000006" } }, { column: { name: car_model_id, value: "20000000-0000-0000-0000-000000000001" } } ] }
+
+
+
+
+        - insert:
+            tableName: parts
+            columns:
+              - column: { name: id, value: "50000000-0000-0000-0000-000000000001" }
+              - column: { name: created_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: updated_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: removed, valueBoolean: false }
+              - column: { name: name, value: "Тормозные колодки передние" }
+              - column: { name: part_number, value: "BP-BMW-001" }
+              - column: { name: category, value: "BRAKE_PARTS" }
+              - column: { name: manufacturer, value: "Brembo" }
+              - column: { name: price, valueNumeric: 8500.00 }
+              - column: { name: description, value: "Колодки для BMW 320i" }
+              - column: { name: status, value: "AVAILABLE" }
+              - column: { name: quantity, valueNumeric: 15 }
+              - column: { name: location, value: "A-3" }
+
+        - insert:
+            tableName: part_compatible_models
+            columns:
+              - column: { name: part_id, value: "50000000-0000-0000-0000-000000000001" }
+              - column: { name: car_model_id, value: "20000000-0000-0000-0000-000000000001" }
+
+
+
+
+
+        - insert:
+            tableName: orders
+            columns:
+              - column: { name: id, value: "60000000-0000-0000-0000-000000000001" }
+              - column: { name: created_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: updated_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: removed, valueBoolean: false }
+              - column: { name: order_number, value: "ORD-TEST-USER1-001" }
+              - column: { name: customer_id, value: "10000000-0000-0000-0000-000000000001" }
+              - column: { name: manager_id, value: "10000000-0000-0000-0000-000000000003" }
+              - column: { name: status, value: "CREATED" }
+              - column: { name: type, value: "IN_STOCK" }
+
+        - insert:
+            tableName: in_stock_orders
+            columns:
+              - column: { name: id, value: "60000000-0000-0000-0000-000000000001" }
+              - column: { name: car_id, value: "30000000-0000-0000-0000-000000000001" }
+
+        - insert:
+            tableName: orders
+            columns:
+              - column: { name: id, value: "60000000-0000-0000-0000-000000000002" }
+              - column: { name: created_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: updated_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: removed, valueBoolean: false }
+              - column: { name: order_number, value: "ORD-TEST-USER2-001" }
+              - column: { name: customer_id, value: "10000000-0000-0000-0000-000000000002" }
+              - column: { name: manager_id, value: "10000000-0000-0000-0000-000000000003" }
+              - column: { name: status, value: "CREATED" }
+              - column: { name: type, value: "IN_STOCK" }
+
+        - insert:
+            tableName: in_stock_orders
+            columns:
+              - column: { name: id, value: "60000000-0000-0000-0000-000000000002" }
+              - column: { name: car_id, value: "30000000-0000-0000-0000-000000000002" }
+
+        - insert:
+            tableName: test_drive_orders
+            columns:
+              - column: { name: id, value: "70000000-0000-0000-0000-000000000001" }
+              - column: { name: created_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: updated_at, valueDate: "CURRENT_TIMESTAMP" }
+              - column: { name: removed, valueBoolean: false }
+              - column: { name: customer_id, value: "10000000-0000-0000-0000-000000000001" }
+              - column: { name: manager_id, value: "10000000-0000-0000-0000-000000000003" }
+              - column: { name: car_id, value: "30000000-0000-0000-0000-000000000001" }
+              - column: { name: requested_time, valueDate: "2026-05-01T12:00:00" }
+              - column: { name: status, value: "REQUESTED" }

@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package org.example.grpc;
+
+option java_multiple_files = true;
+option java_package = "org.example.grpc";
+option java_outer_classname = "CarProto";
+
+service CarService {
+  rpc ListAvailableCars (EmptyRequest) returns (CarListResponse);
+  rpc GetCarById (CarRequest) returns (CarResponse);
+}
+
+message EmptyRequest {}
+
+message CarRequest {
+  string id = 1;
+}
+
+message CarListResponse {
+  repeated CarResponse cars = 1;
+}
+
+message CarResponse {
+  string id = 1;
+  string brand = 2;
+  string model = 3;
+  int32 year = 4;
+  string body_type = 5;
+  string fuel_type = 6;
+  string transmission_type = 7;
+  string drive_type = 8;
+  string color = 9;
+  double price = 10;
+  string status = 11;
+  string vin = 12;
+  double engine_power = 13;
+  double engine_volume = 14;
+}

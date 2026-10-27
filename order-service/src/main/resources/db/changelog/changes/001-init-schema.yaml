@@ -1,0 +1,816 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-users
+      author: artstar
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                    name: keycloak_id
+                    type: uuid
+                    constraints:
+                      nullable: false
+                      unique: true
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: removed
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: VARCHAR(128)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_name
+                  type: VARCHAR(128)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role
+                  type: VARCHAR(32)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: active
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: employee_id
+                  type: VARCHAR(64)
+              - column:
+                  name: warehouse_id
+                  type: VARCHAR(64)
+        - addUniqueConstraint:
+            tableName: users
+            columnNames: employee_id
+            constraintName: uk_users_employee_id
+        - addUniqueConstraint:
+            tableName: users
+            columnNames: warehouse_id
+            constraintName: uk_users_warehouse_id
+  - changeSet:
+      id: 002-create-car-models
+      author: artstar
+      changes:
+        - createTable:
+            tableName: car_models
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: removed
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+              - column:
+                  name: brand
+                  type: VARCHAR(128)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: model
+                  type: VARCHAR(128)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: body_type
+                  type: VARCHAR(32)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: base_price
+                  type: DECIMAL(19,2)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 003-create-car-model-collections
+      author: artstar
+      changes:
+        - createTable:
+            tableName: car_model_years
+            columns:
+              - column:
+                  name: car_model_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: year_value
+                  type: INT
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: car_model_years
+            baseColumnNames: car_model_id
+            referencedTableName: car_models
+            referencedColumnNames: id
+            constraintName: fk_car_model_years_model
+        - createTable:
+            tableName: car_model_engines
+            columns:
+              - column:
+                  name: car_model_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: power
+                  type: DOUBLE PRECISION
+                  constraints:
+                    nullable: false
+              - column:
+                  name: volume
+                  type: DOUBLE PRECISION
+                  constraints:
+                    nullable: false
+              - column:
+                  name: fuel_type
+                  type: VARCHAR(32)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: cylinders
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: model
+                  type: VARCHAR(128)
+        - addForeignKeyConstraint:
+            baseTableName: car_model_engines
+            baseColumnNames: car_model_id
+            referencedTableName: car_models
+            referencedColumnNames: id
+            constraintName: fk_car_model_engines_model
+        - createTable:
+            tableName: car_model_transmissions
+            columns:
+              - column:
+                  name: car_model_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: transmission_type
+                  type: VARCHAR(32)
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: car_model_transmissions
+            baseColumnNames: car_model_id
+            referencedTableName: car_models
+            referencedColumnNames: id
+            constraintName: fk_car_model_transmissions_model
+        - createTable:
+            tableName: car_model_drives
+            columns:
+              - column:
+                  name: car_model_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: drive_type
+                  type: VARCHAR(32)
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: car_model_drives
+            baseColumnNames: car_model_id
+            referencedTableName: car_models
+            referencedColumnNames: id
+            constraintName: fk_car_model_drives_model
+  - changeSet:
+      id: 004-create-cars
+      author: artstar
+      changes:
+        - createTable:
+            tableName: cars
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: removed
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+              - column:
+                  name: brand
+                  type: VARCHAR(128)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: model
+                  type: VARCHAR(128)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: year
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: body_type
+                  type: VARCHAR(32)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: fuel_type
+                  type: VARCHAR(32)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: transmission_type
+                  type: VARCHAR(32)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: drive_type
+                  type: VARCHAR(32)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: engine_power
+                  type: DOUBLE PRECISION
+                  constraints:
+                    nullable: false
+              - column:
+                  name: engine_volume
+                  type: DOUBLE PRECISION
+                  constraints:
+                    nullable: false
+              - column:
+                  name: engine_fuel_type
+                  type: VARCHAR(32)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: engine_cylinders
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: engine_model
+                  type: VARCHAR(128)
+              - column:
+                  name: color
+                  type: VARCHAR(64)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: DECIMAL(19,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: VARCHAR(32)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: vin
+                  type: VARCHAR(17)
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            tableName: cars
+            columnNames: vin
+            constraintName: uk_cars_vin
+  - changeSet:
+      id: 005-create-components
+      author: artstar
+      changes:
+        - createTable:
+            tableName: components
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: removed
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(128)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: VARCHAR(32)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: VARCHAR(512)
+              - column:
+                  name: price
+                  type: DECIMAL(19,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: base
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: component_compatible_models
+            columns:
+              - column:
+                  name: component_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: car_model_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: component_compatible_models
+            baseColumnNames: component_id
+            referencedTableName: components
+            referencedColumnNames: id
+            constraintName: fk_component_models_component
+        - addForeignKeyConstraint:
+            baseTableName: component_compatible_models
+            baseColumnNames: car_model_id
+            referencedTableName: car_models
+            referencedColumnNames: id
+            constraintName: fk_component_models_model
+  - changeSet:
+      id: 006-create-parts
+      author: artstar
+      changes:
+        - createTable:
+            tableName: parts
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: removed
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(128)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: part_number
+                  type: VARCHAR(64)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: category
+                  type: VARCHAR(32)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: manufacturer
+                  type: VARCHAR(128)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: DECIMAL(19,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: VARCHAR(512)
+              - column:
+                  name: status
+                  type: VARCHAR(32)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: quantity
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: location
+                  type: VARCHAR(64)
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            tableName: parts
+            columnNames: part_number
+            constraintName: uk_parts_part_number
+        - createTable:
+            tableName: part_compatible_models
+            columns:
+              - column:
+                  name: part_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: car_model_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: part_compatible_models
+            baseColumnNames: part_id
+            referencedTableName: parts
+            referencedColumnNames: id
+            constraintName: fk_part_models_part
+        - addForeignKeyConstraint:
+            baseTableName: part_compatible_models
+            baseColumnNames: car_model_id
+            referencedTableName: car_models
+            referencedColumnNames: id
+            constraintName: fk_part_models_model
+  - changeSet:
+      id: 007-create-configurations-and-orders
+      author: artstar
+      changes:
+        - createTable:
+            tableName: car_configurations
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: removed
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+              - column:
+                  name: car_model_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: total_price
+                  type: DECIMAL(19,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: valid
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: validation_message
+                  type: VARCHAR(512)
+        - addForeignKeyConstraint:
+            baseTableName: car_configurations
+            baseColumnNames: car_model_id
+            referencedTableName: car_models
+            referencedColumnNames: id
+            constraintName: fk_car_configurations_model
+        - createTable:
+            tableName: car_configuration_components
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: removed
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+              - column:
+                  name: configuration_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: component_type
+                  type: VARCHAR(32)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: component_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: car_configuration_components
+            baseColumnNames: configuration_id
+            referencedTableName: car_configurations
+            referencedColumnNames: id
+            constraintName: fk_car_configuration_components_configuration
+        - addForeignKeyConstraint:
+            baseTableName: car_configuration_components
+            baseColumnNames: component_id
+            referencedTableName: components
+            referencedColumnNames: id
+            constraintName: fk_car_configuration_components_component
+        - createTable:
+            tableName: orders
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: removed
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+              - column:
+                  name: order_number
+                  type: VARCHAR(64)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: customer_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: manager_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: VARCHAR(32)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: VARCHAR(32)
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            tableName: orders
+            columnNames: order_number
+            constraintName: uk_orders_order_number
+        - addForeignKeyConstraint:
+            baseTableName: orders
+            baseColumnNames: customer_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_orders_customer
+        - addForeignKeyConstraint:
+            baseTableName: orders
+            baseColumnNames: manager_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_orders_manager
+        - createTable:
+            tableName: in_stock_orders
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: car_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: in_stock_orders
+            baseColumnNames: id
+            referencedTableName: orders
+            referencedColumnNames: id
+            constraintName: fk_in_stock_orders_order
+        - addForeignKeyConstraint:
+            baseTableName: in_stock_orders
+            baseColumnNames: car_id
+            referencedTableName: cars
+            referencedColumnNames: id
+            constraintName: fk_in_stock_orders_car
+        - createTable:
+            tableName: custom_orders
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: car_model_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: configuration_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: expected_delivery_date
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: delivery_date
+                  type: TIMESTAMP
+        - addForeignKeyConstraint:
+            baseTableName: custom_orders
+            baseColumnNames: id
+            referencedTableName: orders
+            referencedColumnNames: id
+            constraintName: fk_custom_orders_order
+        - addForeignKeyConstraint:
+            baseTableName: custom_orders
+            baseColumnNames: car_model_id
+            referencedTableName: car_models
+            referencedColumnNames: id
+            constraintName: fk_custom_orders_model
+        - addForeignKeyConstraint:
+            baseTableName: custom_orders
+            baseColumnNames: configuration_id
+            referencedTableName: car_configurations
+            referencedColumnNames: id
+            constraintName: fk_custom_orders_configuration
+        - createTable:
+            tableName: test_drive_orders
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: removed
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+              - column:
+                  name: customer_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: manager_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: car_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: requested_time
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: VARCHAR(32)
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: test_drive_orders
+            baseColumnNames: customer_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_test_drive_orders_customer
+        - addForeignKeyConstraint:
+            baseTableName: test_drive_orders
+            baseColumnNames: manager_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_test_drive_orders_manager
+        - addForeignKeyConstraint:
+            baseTableName: test_drive_orders
+            baseColumnNames: car_id
+            referencedTableName: cars
+            referencedColumnNames: id
+            constraintName: fk_test_drive_orders_car

@@ -1,0 +1,8 @@
+.git
+.gradle
+**/.gradle
+**/build/tmp
+**/build/classes
+**/build/generated
+**/build/reports
+**/src/integrationTest

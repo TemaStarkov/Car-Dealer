@@ -1,0 +1,64 @@
+databaseChangeLog:
+  - changeSet:
+      id: 009-create-assembly-orders
+      author: artstar
+      changes:
+        - createTable:
+            tableName: assembly_orders
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: source_order_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    unique: true
+
+              - column:
+                  name: source_order_type
+                  type: VARCHAR(64)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: car_id
+                  type: UUID
+
+              - column:
+                  name: car_model_id
+                  type: UUID
+
+              - column:
+                  name: warehouse_admin_id
+                  type: UUID
+
+              - column:
+                  name: created_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: status
+                  type: VARCHAR(32)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: removed
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false

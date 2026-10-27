@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: order-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8081/realms/car-dealership
+
+
+  datasource:
+    url: jdbc:postgresql://localhost:5433/order_db
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9094}
+    consumer:
+      group-id: order-service
+      auto-offset-reset: earliest
+      properties:
+        spring.json.trusted.packages: "*"
+    producer:
+      acks: all
+      properties:
+        spring.json.add.type.headers: false
+
+
+server:
+  port: 8080
+
+grpc:
+  client:
+    storage-service:
+      address: 'static://storage-service:9091'
+      negotiationType: plaintext
+      timeout: 5s
