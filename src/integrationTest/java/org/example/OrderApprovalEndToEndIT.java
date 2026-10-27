@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Testcontainers
-class Lab4KafkaEndToEndIT {
+class OrderApprovalEndToEndIT {
 
     private static final int POSTGRES_PORT = 5432;
 
